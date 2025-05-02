@@ -38,7 +38,7 @@ function App() {
 
   return (
     <div className="App">
-     <h1>Car Store</h1>
+     <h1>Cars Store</h1>
     <CarForm selectedCar={selectedCar} onSave={handleSave} />
     <CarList cars={cars} onEdit={setSelectedCar} onDelete={handleDelete} />
     </div>
