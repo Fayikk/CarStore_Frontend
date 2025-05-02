@@ -1,0 +1,49 @@
+name: Frontend CI/CD
+
+on:
+  push:
+    branches: [ main ] # Değişiklik yapılınca çalışacak branch
+
+env:
+  NODE_ENV: production
+  DEPLOY_DIR: 'C:\\inetpub\\wwwroot\\Frontend_Project'
+
+jobs:
+  install_build_deploy:
+    name: Install, Build and Deploy Frontend
+    runs-on: self-hosted  # self-hosted runner kullanıyorsan: self-hosted, Frontend_Runner
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18' # Projene uygun versiyonu kullan
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Clean IIS deploy directory
+        shell: powershell
+        run: |
+          if (Test-Path "$env:DEPLOY_DIR") {
+            Remove-Item -Recurse -Force "$env:DEPLOY_DIR\*"
+          } else {
+            New-Item -ItemType Directory -Path "$env:DEPLOY_DIR"
+          }
+
+      - name: Copy build output to IIS directory
+        shell: powershell
+        run: |
+          Copy-Item -Recurse -Force ".\build\*" "$env:DEPLOY_DIR\"
+
+      - name: Restart IIS AppPool
+        shell: powershell
+        run: |
+          Import-Module WebAdministration
+          Restart-WebAppPool -Name 'Frontend'
