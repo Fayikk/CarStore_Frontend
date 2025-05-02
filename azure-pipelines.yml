@@ -1,0 +1,41 @@
+trigger:
+  branches:
+    include:
+      - test
+
+variables:
+  NODE_ENV: production
+
+pool:
+  name: Default
+  demands:
+    - Agent.Name -equals Devopsvmbackend
+
+stages:
+  - stage: InstallBuildDeploy
+    displayName: 'Install, Build and Deploy Frontend'
+    jobs:
+      - job: InstallBuildDeploy
+        displayName: 'Install, Build and Deploy in One Step'
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: '16.x'
+            displayName: 'Use Node.js'
+
+          - script: |
+              echo Installing dependencies...
+              npm install
+            displayName: 'Install npm packages'
+
+          - script: |
+              echo Building project...
+              npm run build
+            displayName: 'Build project'
+
+          - script: |
+              echo Deploying to IIS...
+              powershell -Command "Remove-Item -Recurse -Force 'C:\inetpub\wwwroot\Frontend_Project\*'"
+              powershell -Command "Copy-Item -Recurse -Force 'build\*' 'C:\inetpub\wwwroot\Frontend_Project\'"
+              powershell -Command "Import-Module WebAdministration; Restart-WebAppPool -Name 'Frontend'"
+            displayName: 'Deploy to IIS'
