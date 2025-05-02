@@ -2,7 +2,7 @@ name: Frontend CI/CD
 
 on:
   push:
-    branches: [ main ] # Değişiklik yapılınca çalışacak branch
+    branches: [ test ] # Değişiklik yapılınca çalışacak branch
 
 env:
   NODE_ENV: production
