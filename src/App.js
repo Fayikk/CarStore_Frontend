@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import {useEffect, useState} from 'react';
 import { createCar, deleteCar, getCars, updateCar } from './api';
@@ -12,7 +11,7 @@ function App() {
   const loadCars = async () => {
     const data = await getCars();
     console.log(data);
-    setCars(data);
+    setCars(data);//
   }
 
   useEffect(()=>{
