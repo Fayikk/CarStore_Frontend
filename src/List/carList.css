@@ -1,0 +1,109 @@
+.car-list-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.car-list-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 2rem;
+}
+
+.car-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.car-item {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    background-color: white;
+}
+
+.car-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.car-header {
+    padding: 15px;
+    background-color: #3498db;
+    color: white;
+}
+
+.car-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.car-details {
+    padding: 15px;
+}
+
+.car-details p {
+    margin: 10px 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+.car-details span {
+    font-weight: bold;
+    color: #555;
+}
+
+.car-actions {
+    display: flex;
+    padding: 15px;
+    border-top: 1px solid #eee;
+    justify-content: space-between;
+}
+
+button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.edit-btn {
+    background-color: #2ecc71;
+    color: white;
+}
+
+.edit-btn:hover {
+    background-color: #27ae60;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+.no-cars {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #777;
+    padding: 30px;
+}
+
+@media (max-width: 768px) {
+    .car-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .car-list-title {
+        font-size: 1.5rem;
+    }
+}

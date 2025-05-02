@@ -1,23 +1,47 @@
 import logo from './logo.svg';
 import './App.css';
-
+import {useEffect, useState} from 'react';
+import { createCar, deleteCar, getCars, updateCar } from './api';
+import CarForm from './Form/carForm';
+import CarList from './List/carList';
 function App() {
+  const [cars,setCars] = useState([]);
+
+  const [selectedCar, setSelectedCar] = useState(null);
+
+  const loadCars = async () => {
+    const data = await getCars();
+    console.log(data);
+    setCars(data);
+  }
+
+  useEffect(()=>{
+    loadCars();
+  },[])
+
+
+  const handleSave = async (car) => {
+    if (car.id) {
+      await updateCar(car);
+    } else {
+      await createCar(car);
+    }
+    setSelectedCar(null);
+    loadCars();
+  }
+
+  const handleDelete = async (id) => {
+    await deleteCar(id);
+    loadCars();
+  }
+
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+     <h1>Car Store</h1>
+    <CarForm selectedCar={selectedCar} onSave={handleSave} />
+    <CarList cars={cars} onEdit={setSelectedCar} onDelete={handleDelete} />
     </div>
   );
 }
