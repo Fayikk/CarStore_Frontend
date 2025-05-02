@@ -1,0 +1,19 @@
+stages:
+  - install_build_deploy
+
+variables:
+  NODE_ENV: production
+
+install_dependencies:
+  stage: install_build_deploy
+  tags:
+    - Frontend_Rnr  # Runner'ın etiketi (Windows runner kullandığını varsayıyorum)
+  script:
+    - powershell -Command "npm install"
+    - powershell -Command "npm run build"
+    - powershell -Command "Remove-Item -Recurse -Force 'C:\inetpub\wwwroot\Frontend_Project\*'"
+    - powershell -Command "Copy-Item -Recurse -Force 'build\*' 'C:\inetpub\wwwroot\Frontend_Project\'"
+
+    # AppPool'u yeniden başlat (IIS)
+    - powershell -Command "Import-Module WebAdministration; Restart-WebAppPool -Name 'Frontend'"
+
